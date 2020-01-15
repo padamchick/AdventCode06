@@ -11,7 +11,13 @@ public class SignalDecoder {
         inputList=InputFileReader.readFileAsLines(filename);
     }
 
-    public List<Map<String,Long>> countLettersInCodes(int passwordLength) {
+    public void decodeSignal() {
+        int passwordLength = inputList.get(0).length();
+        List<Map<String, Long>> letterList = countLettersInCodes(passwordLength);
+        decodedSignal = findCorrectSignal(letterList, passwordLength);
+    }
+
+    private List<Map<String,Long>> countLettersInCodes(int passwordLength) {
         List<Map<String,Long>> lettersCounter = new ArrayList<>();
         StringBuilder[] sb = new StringBuilder[passwordLength];
         //initialize all builders
@@ -32,13 +38,7 @@ public class SignalDecoder {
         return lettersCounter;
     }
 
-    public void decodeSignal() {
-        int passwordLength = inputList.get(0).length();
-        List<Map<String, Long>> letterList = countLettersInCodes(passwordLength);
-        decodedSignal = findCorrectSignal(letterList, passwordLength);
-    }
-
-    public String findCorrectSignal(List<Map<String, Long>> letterList, int passwordLength) {
+    private String findCorrectSignal(List<Map<String, Long>> letterList, int passwordLength) {
         StringBuilder codeBuilder = new StringBuilder(passwordLength);
         for(Map<String,Long> map : letterList) {
             String mostFreqLetter = findMax(map);
@@ -47,7 +47,7 @@ public class SignalDecoder {
         return codeBuilder.toString();
     }
 
-    public String findMax(Map<String,Long> map) {
+    private String findMax(Map<String,Long> map) {
         return map.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getKey();
     }
 
